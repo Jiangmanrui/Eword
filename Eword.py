@@ -57,7 +57,8 @@ def select():
         #标准化计数
         temp=copy.deepcopy(data)
         #计算单词被选中的得分
-        temp['glb0']=temp['count']*weight_cou+temp['wrong']*weight_wrg+point
+        temp['glb0']=(max(temp['count'])-temp['count'])*weight_cou+temp['wrong']*weight_wrg+point
+        print(max(temp['count'])-temp['count'])
         maxglb=max(temp['glb0'])
         minglb=min(temp['glb0'])
         if maxglb==minglb:
