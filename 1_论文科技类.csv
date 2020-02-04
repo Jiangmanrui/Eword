@@ -1,12 +1,12 @@
-eword,cword,count,wrong,proportion
-office hour,办公时间,1,0.5,0.5
-termpaper,学期论文,0,0.0,0.0
-essay,作文，散文,0,0.0,0.0
-thesis statement,论文陈述,1,0.0,0.0
-proposed topics,推荐的论文选题,0,0.0,0.0
-selecting topic,选择性题目,0,0.0,0.0
-scope,范围,0,0.0,0.0
-wander off topic,跑题,0,0.0,0.0
-available,可利用的,1,0.5,0.5
-collection,藏书,0,0.0,0.0
-researchdata,调查数据,0,0.0,0.0
+eword,cword,count,wrong,prob
+office hour,办公时间,0,0,0
+termpaper,学期论文,0,0,0
+essay,作文，散文,0,0,0
+thesis statement,论文陈述,0,0,0
+proposed topics,推荐的论文选题,0,0,0
+selecting topic,选择性题目,0,0,0
+scope,范围,0,0,0
+wander off topic,跑题,0,0,0
+available,可利用的,0,0,0
+collection,藏书,0,0,0
+researchdata,调查数据,0,0,0
