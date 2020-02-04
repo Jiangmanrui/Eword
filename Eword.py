@@ -74,6 +74,7 @@ def select():
     #根据概率表进行随机抽取
     x=np.random.choice(range(length),p=glb)
     connect=x
+    data.loc[connect, 'count'] = data.loc[connect, 'count'] + 1
 
 #读单词
 def read():
@@ -95,7 +96,6 @@ def showe():
     uspell=spell.get(0.0,tkinter.END)
     uspell=uspell.lower().rstrip()
     # print(word,"&&&",uspell,"&&&")
-    data.loc[connect, 'count']=data.loc[connect, 'count']+1
     if word!=uspell:
         data.loc[connect, 'wrong']=data.loc[connect, 'wrong']+0.5
         spell.delete(0.0, 'end')
@@ -196,4 +196,5 @@ for word in range(length):
         data.loc[word, 'prob']=0
     else:
         data.loc[word,'prob'] = data.loc[word,'wrong'] / data.loc[word,'count']
+# print(data)
 data.to_csv(data_address,encoding='gbk',index=False)
