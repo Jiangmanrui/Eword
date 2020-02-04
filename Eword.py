@@ -8,11 +8,30 @@ from tkinter import filedialog
 import youdaoread
 from playsound import playsound
 import copy
+import configparser
 
-#加载有道
-yd=youdaoread.youdao()
+cp = configparser.ConfigParser()
+
+# 单词被选中次数的权重：weight_cou
+# 单词记错次数的权重：weight_err
+# 单词基础分：point
+
+if os.path.exists("config.ini"):
+    cp.read("config.ini")
+    weight_cou = float(cp.get("weight", "weight_count"))
+    weight_wrg = float(cp.get("weight", "weight_wrong"))
+    point= float(cp.get("weight", "weight_point"))
+    yd = youdaoread.youdao(cp.get("address", "address_youdao"))
+else:
+    weight_cou = 0.3
+    weight_wrg = 0.7
+    point=1
+    # 加载有道
+    yd = youdaoread.youdao()
 
 connect=0
+glb = 0
+cwrong_judge=0
 
 def load():
     global data
@@ -29,16 +48,14 @@ def select():
     #设置一个概率表
     global glb
     global connect
+    global cwrong_judge
+    cwrong_judge=0
     length=len(data['eword'])
-    glb=0
     if glb==0:
         #标准化计数
-        maxc=max(data['count'])
-        minc=min(data['count'])
         temp=copy.deepcopy(data)
-        temp['count2']=1-(temp['count']-minc)/(maxc-minc+1)
         #计算单词被选中的得分
-        temp['glb0']=temp['count2']*0.3+temp['proportion']*0.7
+        temp['glb0']=temp['count']*weight_cou+temp['wrong']*weight_wrg+point
         maxglb=max(temp['glb0'])
         minglb=min(temp['glb0'])
         if maxglb==minglb:
@@ -86,12 +103,15 @@ def showe():
 
 #显示中文意思及历史错误率
 def showc():
-    p = round(data.loc[connect, 'proportion'] * 100, 2)
+    p = round(data.loc[connect, 'prob'] * 100, 2)
     cword.insert('end',str(data.loc[connect, 'cword']) +'\n\n'+ '错误率：' + str(p) + '%')
 
 #中文意思记错，增加错误率
 def cwrong():
-    data.loc[connect, 'wrong']=data.loc[connect, 'wrong']+0.5
+    global cwrong_judge
+    if cwrong_judge==0:
+        data.loc[connect, 'wrong']=data.loc[connect, 'wrong']+0.5
+        cwrong_judge=1
 
 
 
@@ -139,7 +159,7 @@ filename.pack(expand='yes')
 read=tkinter.Button(fm21,text='听',width=19,height=1,command=read,font=("黑体", 20, "bold")).pack(pady=5)
 #答案
 answer = tkinter.Text(fm21,width=20,height=2,font=("黑体", 20, "bold"))
-answer.insert('end',"...")
+answer.insert('end',"请抽取单词~")
 answer.pack(anchor='center',side='top',expand='yes')
 #填写
 spell = tkinter.Text(fm21,width=20,height=2,font=("黑体", 20, "bold"))
@@ -156,7 +176,7 @@ cword.pack(anchor='center',side='top',expand='yes')
 
 bx=10
 bh=2
-next=tkinter.Button(fm3,text='下一个',width=bx,height=bh,command=select,font=("黑体", 20, "bold")).pack(side='left',expand='yes')
+next=tkinter.Button(fm3,text='抽词',width=bx,height=bh,command=select,font=("黑体", 20, "bold")).pack(side='left',expand='yes')
 
 seword=tkinter.Button(fm3,text='显示单词',width=bx,height=bh,command=showe,font=("黑体", 20, "bold")).pack(side='left',expand='yes')
 
@@ -170,7 +190,7 @@ mygui.mainloop()
 length=len(data['eword'])
 for word in range(length):
     if data.loc[word,'count']==0:
-        data.loc[word, 'proportion']=0
+        data.loc[word, 'prob']=0
     else:
-        data.loc[word,'proportion'] = data.loc[word,'wrong'] / data.loc[word,'count']
+        data.loc[word,'prob'] = data.loc[word,'wrong'] / data.loc[word,'count']
 data.to_csv(data_address,encoding='gbk',index=False)
