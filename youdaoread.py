@@ -1,7 +1,4 @@
 '''
-转载自 祥的博客
-原文链接：https://blog.csdn.net/humanking7/article/details/88630856
-
 程序思想：
 有两个本地语音库，美音库Speech_US，英音库Speech_US
 调用有道api，获取语音MP3，存入对应的语音库中
@@ -12,7 +9,7 @@ import urllib.request
 
 
 class youdao():
-    def __init__(self, type=0, word='hellow'):
+    def __init__(self, type=0, ads='C:',word='hellow'):
         '''
         调用youdao API
         type = 0：美音
@@ -24,26 +21,24 @@ class youdao():
         word = word.lower()  # 小写
         self._type = type  # 发音方式
         self._word = word  # 单词
-
-        if not os.path.exists('E:\youdaoread'):
-            # 不存在，就创建
-            os.makedirs('E:\youdaoread')
+        self.address_us = ads+'\youdaoread\Speech_US'
+        self.address_en = ads + '\youdaoread\Speech_EN'
 
         # 文件根目录
         self._dirRoot = os.path.dirname(os.path.abspath(__file__))
         if 0 == self._type:
-            self._dirSpeech = os.path.join(self._dirRoot, 'E:\youdaoread\Speech_US')  # 美音库
+            self._dirSpeech = os.path.join(self._dirRoot, self.address_us)  # 美音库
         else:
-            self._dirSpeech = os.path.join(self._dirRoot, 'E:\youdaoread\Speech_EN')  # 英音库
+            self._dirSpeech = os.path.join(self._dirRoot,self.address_en)  # 英音库
 
         # 判断是否存在美音库
-        if not os.path.exists('E:\youdaoread\Speech_US'):
+        if not os.path.exists(self.address_us):
             # 不存在，就创建
-            os.makedirs('E:\youdaoread\Speech_US')
+            os.makedirs(self.address_us)
         # 判断是否存在英音库
-        if not os.path.exists('E:\youdaoread\Speech_EN'):
+        if not os.path.exists(self.address_en):
             # 不存在，就创建
-            os.makedirs('E:\youdaoread\Speech_EN')
+            os.makedirs(self.address_en)
 
     def setAccent(self, type=0):
         '''
@@ -53,9 +48,9 @@ class youdao():
         self._type = type  # 发音方式
 
         if 0 == self._type:
-            self._dirSpeech = os.path.join(self._dirRoot, 'E:\youdaoread\Speech_US')  # 美音库
+            self._dirSpeech = os.path.join(self._dirRoot, self.address_us)  # 美音库
         else:
-            self._dirSpeech = os.path.join(self._dirRoot, 'E:\youdaoread\Speech_EN')  # 英音库
+            self._dirSpeech = os.path.join(self._dirRoot, self.address_en)  # 英音库
 
     def getAccent(self):
         '''
