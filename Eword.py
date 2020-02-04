@@ -28,6 +28,7 @@ else:
     weight_wrg = 0.7
     point=1
     # 加载有道
+    ydadd='C:'
     yd = youdaoread.youdao()
 
 connect=0
