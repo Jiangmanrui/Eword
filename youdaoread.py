@@ -21,7 +21,7 @@ class youdao():
         word = word.lower()  # 小写
         self._type = type  # 发音方式
         self._word = word  # 单词
-        self.address_us = ads+'\youdaoread\Speech_US'
+        self.address_us = ads + '\youdaoread\Speech_US'
         self.address_en = ads + '\youdaoread\Speech_EN'
 
         # 文件根目录
