@@ -21,7 +21,8 @@ if os.path.exists("config.ini"):
     weight_cou = float(cp.get("weight", "weight_count"))
     weight_wrg = float(cp.get("weight", "weight_wrong"))
     point= float(cp.get("weight", "weight_point"))
-    yd = youdaoread.youdao(cp.get("address", "address_youdao"))
+    ydadd=cp.get("address", "address_youdao")
+    yd = youdaoread.youdao(ads=ydadd)
 else:
     weight_cou = 0.3
     weight_wrg = 0.7
@@ -80,7 +81,8 @@ def read():
     for w in word2:
         yd.down(w)
     for w in word2:
-        source_file_path="E:/youdaoread/Speech_US/"+w+".mp3"
+        source_file_path=ydadd+"/youdaoread/Speech_US/"+w+".mp3"
+        # print(source_file_path)
         playsound(source_file_path)
 
 #显示英文拼写，并判断对错
